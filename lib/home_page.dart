@@ -14,9 +14,11 @@ class TimerPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0,
           title: const Text("Timer"),
         ),
         body: Container(
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
@@ -34,13 +36,14 @@ class TimerPage extends StatelessWidget {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          Colors.blueAccent.withOpacity(0.8),
-                          Colors.lightBlue.withOpacity(0.8),
+                          Theme.of(context).primaryColor.withOpacity(0.8),
+                          Theme.of(context).primaryColorLight.withOpacity(0.8),
                         ],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.blue.withOpacity(0.5),
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.5),
                           blurRadius: 10.0,
                           offset: const Offset(5.0, 10.0),
                         ),
@@ -49,10 +52,11 @@ class TimerPage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Obx(() => Text(
-                            getFormattedTime(timerController.timeElapsed),
-                            style: const TextStyle(
-                                fontSize: 45, color: Colors.white))),
+                        Obx(
+                          () => Text(
+                              getFormattedTime(timerController.timeElapsed),
+                              style: Theme.of(context).textTheme.displaySmall),
+                        ),
                         const Text("min : sec : msec",
                             style:
                                 TextStyle(fontSize: 10, color: Colors.black54)),
@@ -96,8 +100,13 @@ class TimerPage extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(getFormattedTime(timer)),
-                              Text('${index + 1} Lap'),
+                              Text(getFormattedTime(timer),
+                                  style:
+                                      Theme.of(context).textTheme.titleSmall),
+                              Text(
+                                '${index + 1} Lap',
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
                             ],
                           ),
                         );

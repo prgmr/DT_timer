@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'home_page.dart';
 
 void main() {
-  runApp(TimerApp());
+  runApp(const TimerApp());
 }
 
 class TimerApp extends StatelessWidget {
