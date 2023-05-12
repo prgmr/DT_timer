@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'timer_controller.dart';
+import 'utils.dart';
 
 class TimerPage extends StatelessWidget {
   TimerPage({Key? key}) : super(key: key);
@@ -10,41 +11,103 @@ class TimerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("TimerApp"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              children: [
-                Obx(() => Text(
-                    "${timerController.timeElapsed.minutes.toString().padLeft(2, '0')}:${timerController.timeElapsed.seconds.toString().padLeft(2, '0')}:${timerController.timeElapsed.milliseconds.toString().padLeft(3, '0')}",
-                    style: const TextStyle(fontSize: 30))),
-                const Text("min : sec : msec", style: TextStyle()),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Obx(() => (!timerController.isPaused.value
-                    ? ElevatedButton.icon(
-                        onPressed: timerController.pauseTimer,
-                        icon: const Icon(Icons.pause),
-                        label: const Text("Pause"))
-                    : ElevatedButton.icon(
-                        onPressed: timerController.startTimer,
-                        icon: const Icon(Icons.play_arrow),
-                        label: const Text("Start")))),
-                ElevatedButton.icon(
-                    onPressed: timerController.resetTimer,
-                    icon: const Icon(Icons.restart_alt),
-                    label: const Text("Reset")),
-              ],
-            ),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Timer"),
+        ),
+        body: Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: GestureDetector(
+                  onTap: timerController.addTimeToLapsTimeList,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.blueAccent.withOpacity(0.8),
+                          Colors.lightBlue.withOpacity(0.8),
+                        ],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.5),
+                          blurRadius: 10.0,
+                          offset: const Offset(5.0, 10.0),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Obx(() => Text(
+                            getFormattedTime(timerController.timeElapsed),
+                            style: const TextStyle(
+                                fontSize: 45, color: Colors.white))),
+                        const Text("min : sec : msec",
+                            style:
+                                TextStyle(fontSize: 10, color: Colors.black54)),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Obx(() => timerController.isPaused.value
+                        ? ElevatedButton.icon(
+                            onPressed: timerController.pauseTimer,
+                            icon: const Icon(Icons.pause),
+                            label: const Text("Pause"))
+                        : ElevatedButton.icon(
+                            onPressed: timerController.startTimer,
+                            icon: const Icon(Icons.play_arrow),
+                            label: const Text("Start"))),
+                    ElevatedButton.icon(
+                        onPressed: timerController.resetTimer,
+                        icon: const Icon(Icons.restart_alt),
+                        label: const Text("Reset")),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Scrollbar(
+                  child: Obx(
+                    () => ListView.builder(
+                      reverse: true,
+                      itemCount: timerController.timeLaps.length,
+                      itemBuilder: (context, index) {
+                        final timer = timerController.timeLaps[index];
+                        return Container(
+                          padding: const EdgeInsets.symmetric(vertical: 3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(getFormattedTime(timer)),
+                              Text('${index + 1} Lap'),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

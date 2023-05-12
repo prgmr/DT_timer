@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'home_page.dart';
 
@@ -11,7 +12,7 @@ class TimerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Timer Application',
       theme: ThemeData(primarySwatch: Colors.blue),

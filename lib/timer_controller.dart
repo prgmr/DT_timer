@@ -51,7 +51,6 @@ class TimerController extends GetxController {
   }
 
   void resetTimer() {
-    isPaused.value = true;
     _msecElapsed.value = 0;
   }
 
