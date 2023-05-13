@@ -15,7 +15,6 @@ class TimerApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Timer Application',
-      theme: ThemeData(primarySwatch: Colors.blue),
       home: TimerPage(),
     );
   }

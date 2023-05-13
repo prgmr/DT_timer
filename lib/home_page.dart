@@ -16,6 +16,17 @@ class TimerPage extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           title: const Text("Timer"),
+          actions: [
+            IconButton(
+              icon: Icon(Get.isDarkMode
+                  ? Icons.light_mode_outlined
+                  : Icons.dark_mode_outlined),
+              onPressed: () {
+                Get.changeTheme(
+                    Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
+              },
+            )
+          ],
         ),
         body: Container(
           color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -74,15 +85,30 @@ class TimerPage extends StatelessWidget {
                         ? ElevatedButton.icon(
                             onPressed: timerController.pauseTimer,
                             icon: const Icon(Icons.pause),
-                            label: const Text("Pause"))
+                            label: const Text("Pause"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.background,
+                            ),
+                          )
                         : ElevatedButton.icon(
                             onPressed: timerController.startTimer,
                             icon: const Icon(Icons.play_arrow),
-                            label: const Text("Start"))),
+                            label: const Text("Start"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.background,
+                            ),
+                          )),
                     ElevatedButton.icon(
-                        onPressed: timerController.resetTimer,
-                        icon: const Icon(Icons.restart_alt),
-                        label: const Text("Reset")),
+                      onPressed: timerController.resetTimer,
+                      icon: const Icon(Icons.restart_alt),
+                      label: const Text("Reset"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.background,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -101,12 +127,21 @@ class TimerPage extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text(getFormattedTime(timer),
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall),
+                                Text(
+                                  getFormattedTime(timer),
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .background,
+                                  ),
+                                ),
                                 Text(
                                   '${index + 1} Lap',
-                                  style: Theme.of(context).textTheme.titleSmall,
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .background,
+                                  ),
                                 ),
                               ],
                             ),
