@@ -70,7 +70,7 @@ class TimerPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    Obx(() => timerController.isPaused.value
+                    Obx(() => timerController.isRunning.value
                         ? ElevatedButton.icon(
                             onPressed: timerController.pauseTimer,
                             icon: const Icon(Icons.pause),
@@ -88,32 +88,47 @@ class TimerPage extends StatelessWidget {
               ),
               Expanded(
                 flex: 3,
-                child: Scrollbar(
-                  child: Obx(
-                    () => ListView.builder(
-                      reverse: true,
-                      itemCount: timerController.timeLaps.length,
-                      itemBuilder: (context, index) {
-                        final timer = timerController.timeLaps[index];
-                        return Container(
-                          padding: const EdgeInsets.symmetric(vertical: 3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(getFormattedTime(timer),
-                                  style:
-                                      Theme.of(context).textTheme.titleSmall),
-                              Text(
-                                '${index + 1} Lap',
-                                style: Theme.of(context).textTheme.titleSmall,
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                child: Stack(children: [
+                  Scrollbar(
+                    child: Obx(
+                      () => ListView.builder(
+                        reverse: true,
+                        itemCount: timerController.timeLaps.length,
+                        itemBuilder: (context, index) {
+                          final timer = timerController.timeLaps[index];
+                          return Container(
+                            padding: const EdgeInsets.symmetric(vertical: 3),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(getFormattedTime(timer),
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall),
+                                Text(
+                                  '${index + 1} Lap',
+                                  style: Theme.of(context).textTheme.titleSmall,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Obx(() {
+                      if (timerController.timeLaps.isNotEmpty) {
+                        return IconButton(
+                          onPressed: timerController.clearLapsTimeList,
+                          icon: const Icon(Icons.clear),
+                          color: Colors.red,
+                        );
+                      }
+                      return const SizedBox(); // возвращает пустой виджет, если условие не выполняется
+                    }),
+                  ),
+                ]),
               )
             ],
           ),

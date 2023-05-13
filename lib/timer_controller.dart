@@ -14,11 +14,11 @@ class Time {
 }
 
 class TimerController extends GetxController {
+  late Timer _timer;
   var _msecElapsed = 0.obs;
+  var isRunning = false.obs;
   var isPaused = false.obs;
   RxList<Time> timeLaps = RxList<Time>();
-
-  var _timer = Timer.periodic(Duration(milliseconds: 1), (timer) {});
 
   Time get timeElapsed {
     int milliseconds = _msecElapsed.value;
@@ -37,6 +37,7 @@ class TimerController extends GetxController {
   }
 
   void startTimer() {
+    isRunning.value = true;
     isPaused.value = false;
     _timer = Timer.periodic(const Duration(milliseconds: 1), (timer) {
       if (!isPaused.value) {
@@ -46,6 +47,7 @@ class TimerController extends GetxController {
   }
 
   void pauseTimer() {
+    isRunning.value = false;
     isPaused.value = true;
     _timer.cancel();
   }
